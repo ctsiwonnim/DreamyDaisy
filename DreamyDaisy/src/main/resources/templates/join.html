@@ -1,13 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원가입</title>
 </head>
 <style>
+    * {
+         box-sizing: border-box;
+         font-style: normal;
+         font-family: 'Roboto', sans-serif;
+     }
+
+     body {
+         display: flex;
+         flex-direction: row;
+         justify-content: center;
+         font-size: 14px;
+         font-family: 'Roboto', sans-serif;
+     }
+
+     .container {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         width: 670px;
+         height: 960px;
+         margin-top: 60px;
+         margin-bottom: 60px;
+         background: #ffffff;
+         border: 1px solid #cfcfcf;
+         border-radius: 20px;
+     }
+
+     .member-container {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         width: 470px;
+         height: 818px;
+         margin-top: 72px;
+         margin-bottom: 70px;
+     }
+
+     .header {
+         width: 466px;
+         height: 94px;
+         font-weight: 700;
+         font-size: 32px;
+         line-height: 47px;
+         color: #F6A5B7;
+     }
+
+     .user-info {
+         width: 466px;
+     }
+
+     .user-info label {
+         display: block;
+         font-weight: 400;
+         font-size: 16px;
+         line-height: 24px;
+         color: #797979;
+         margin-top: 21px;
+     }
+
+     .user-info input {
+         width: 100%;
+         height: 48px;
+         border: 1px solid #cfcfcf;
+         margin-top: 10px;
+         padding: 10px;
+         font-size: 16px;
+         box-sizing: border-box;
+        margin-bottom: 16px;
+        border-radius: 6px;
+        background-color: #F8F8F8;
+     }
+
+     .user-info #email {
+         border-color: #cfcfcf;
+     }
+
+     .gender {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         width: 140px;
+         height: 23.94px;
+         margin-top: 50px;
+     }
+
+     .gender input {
+         width: 20px;
+         height: 19.95px;
+         background: #ebebeb;
+         border: 1px solid #d2d2d2;
+     }
+
+     .gender label {
+         font-weight: 400;
+         font-size: 16px;
+         line-height: 24px;
+     }
+
+     .agree-check {
+         width: 454px;
+         height: 21.06px;
+         margin-top: 20px;
+         font-weight: 400;
+         font-size: 14px;
+         line-height: 21px;
+         color: #000000;
+     }
+
+     .agree-check label {
+         vertical-align: middle;
+         font-size: 12px;
+     }
+
+     .agree-check input {
+         margin-right: 10px;
+     }
+
+     .btn {
+         display: flex;
+         flex-direction: column;
+         margin-top: 30px;
+         width: 470px;
+         height: 106px;
+         border-top: 1px solid #e6e6e6;
+     }
+
+     button {
+         margin-top: 10px;
+         width: 470px;
+         height: 75px;
+         font-family: 'Roboto', sans-serif;
+         line-height: 27px;
+         text-align: center;
+         border-radius: 10px;
+         border: 1px solid #F6A5B7;
+         font-size: 16px;
+         color : #FFFFFF;
+         font-weight : bold;
+         background-color: #F6A5B7;
+     }
 
 </style>
 <body>
+<form method="post" action="/member/join" id="join-form">
+    <div class="container">
+        <div class="member-container">
+            <div class="header">
+                <div>회원 가입을 위해</div>
+                <div>정보를 입력해주세요</div>
+            </div>
+            <div class="user-info">
+                <label for="email">* EMAIL</label>
+                <input type="email" id="email" name="email" required />
 
+                <label for="name">* NAME</label>
+                <input type="text" id="name" name="name" required />
+
+                <label for="password">* PASSWORD</label>
+                <input type="password" id="password" name="password" required />
+
+                <label for="confirm-password">* CONFIRM-PASSWORD</label>
+                <input type="password" id="confirm-password" name="confirm-password" required />
+
+                <label for="phone">* PHONE NUMBER</label>
+                <input type="text" id="phone" name="phone" required />
+            </div>
+
+            <div class="agree-check">
+                <input type="checkbox" id="agree" name="agree" />
+                <label for="agree">이용약관 개인정보 수집 및 이용, 마케팅 활용 선택에 모두 동의합니다.</label>
+            </div>
+            <div class="btn">
+                <button>JOIN</button>
+            </div>
+        </div>
+    </div>
+</form>
 </body>
 </html>
