@@ -1,0 +1,97 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        }
+      .top-section {
+        background-color: #F6A5B7;
+        text-align: right;
+      }
+      .ex{
+        height: 30px;
+        color: white;
+        margin-left:10px;
+        padding-right: 20px;
+        line-height: 30px;
+      }
+      .banner-section {
+        height: 280px;
+        background-image: url("https://static.wixstatic.com/media/31c96f_a07c4bbedde44d93998a4afa845fe3c8~mv2.jpg");
+        background-size: cover;
+        position: relative;
+      }
+      .search-box {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        background-color: #FFF8C1;
+        padding: 5px;
+        border-radius: 5px;
+      }
+      #menu ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      #menu li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      #menu li a {
+        text-decoration: none;
+        color: black;
+      }
+
+    </style>
+</head>
+<body>
+<div class="top-section">
+    <a href = "/member/login"><span class="ex">LOGIN</span></a>
+    <a href = "/member/Join"><span class="ex">JOIN</span></a>
+    <a href = "/member/mypage"><span class="ex">MYPAGE</span></a>
+    <a href = "/member/cart"><span class="ex">CART</span></a>
+</div>
+
+<div class="banner-section">
+    <!-- 배너 이미지 및 다른 콘텐츠 추가 -->
+    <div class="search-box">
+        검색
+    </div>
+</div>
+<div id="menu">
+    <ul class="main1">
+        <li style="border: none;"><a href="#"><b style="font-size: 20px;"><span style="font-size: 20px;">≡</span> menu1</b></a>
+            <ul class="main2">
+                <li><a href="#">menu2</a>
+                    <ul class="main3">
+                        <li><a href="#">menu3</a></li>
+                        <li><a href="#">menu3</a></li>
+                        <li><a href="#">menu3</a></li>
+                        <li><a href="#">menu3</a></li>
+                        <li><a href="#">menu3</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><a href="#">menu1</a></li>
+        <li><a href="#">menu1</a></li>
+        <li><a href="#">menu1</a></li>
+        <li><a href="#">menu1</a></li>
+        <li><a href="#">menu1</a></li>
+        <li style="border: none;"><a href="#">menu1</a>
+            <ul class="main2">
+                <li><a href="#">menu2</a></li>
+                <li><a href="#">menu2</a></li>
+                <li><a href="#">menu2</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
