@@ -11,8 +11,8 @@ public class MemberController {
     public String loginFrom(){
         return "login";
     }
-//    @GetMapping("/join")
-//    public String joinFrom(){
-//        return "join";
-//    }
+    @GetMapping("/join")
+    public String joinFrom(){
+        return "join";
+    }
 }
