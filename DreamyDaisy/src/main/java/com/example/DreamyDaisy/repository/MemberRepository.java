@@ -9,4 +9,8 @@ public class MemberRepository {
         System.out.println("memberDTO = "+memberDTO);
         return 0;
     }
+
+//    public MemberDTO login(MemberDTO memberDTO) {
+//        return sql.selectOne("Member.login",memberDTO);
+//    }
 }

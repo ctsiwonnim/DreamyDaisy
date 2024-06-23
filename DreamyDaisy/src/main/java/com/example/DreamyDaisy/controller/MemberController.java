@@ -3,6 +3,7 @@ package com.example.DreamyDaisy.controller;
 import com.example.DreamyDaisy.dto.MemberDTO;
 import com.example.DreamyDaisy.repository.MemberRepository;
 import com.example.DreamyDaisy.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,17 @@ public class MemberController {
     public String loginFrom(){
         return "login";
     }
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
+//        boolean loginResult = memberService.login(memberDTO);
+//        if (loginResult){
+//            session.setAttribute("loginEmail", memberDTO.getMemberEmail());
+//            return "main";
+//        } else {
+//            return "login";
+//        }
+//
+//    }
     @GetMapping("/join")
     public String joinFrom(){
         return "join";
