@@ -1,256 +1,243 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
-
+<html lang = en>
 <head>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>장바구니</title>
 </head>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
 
-<!-- 사용자 스크립트 추가 -->
-<th:block layout:fragment="script">
+    * {
+      box-sizing: border-box;
+    }
 
-    <script th:inline="javascript">
+    p,
+    span {
+      margin: 0;
+    }
 
-        // 체크박스 데이터 받아오기 위한 익명 func
-        // 주문할 상품의 체크박스를 클릭 시 총 주문 금액을 받아옴 (체크하면 +, 헤제하면 -)
-        $(document).ready(function(){
-            $("input[name=cartChkBox]").change( function(){
-                getOrderTotalPrice();
-            });
-        });
+    a {
+      color: black;
+    }
 
-        // 총 주문 금액을 구하는 func
-        function getOrderTotalPrice(){
-            var orderTotalPrice = 0;
-            $("input[name=cartChkBox]:checked").each(function() {
-                var cartItemId = $(this).val();
-                var price = $("#price_" + cartItemId).attr("data-price");
-                var count = $("#count_" + cartItemId).val();
-                orderTotalPrice += price*count;
-            });
+    img {
+      display: block;
+      width: 80%;
+      height: 80px;
+      margin: auto;
+    }
 
-            $("#orderTotalPrice").html(orderTotalPrice+'원');
-        }
+    .cart {
+      width: 80%;
+      margin: auto;
+      padding: 30px;
+    }
 
-        // 장바구니 안 상품 개수를 바꾸는 func
-        function changeCount(obj){
-            var count = obj.value;
-            var cartItemId = obj.id.split('_')[1];
-            var price = $("#price_" + cartItemId).data("price");
-            var totalPrice = count*price;
-            $("#totalPrice_" + cartItemId).html(totalPrice+"원");
-            getOrderTotalPrice(); // 여기서 총 주문 금액 구하는 func 호출
+    .cart ul {
+      background-color: whitesmoke;
+      padding: 30px;
+      margin-bottom: 50px;
+      border: whitesmoke solid 1px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 300;
+    }
 
-            updateCartItemCount(cartItemId, count); // 장바구니 상품 개수 수정 func 호출
-        }
 
-        // 체크박스 데이터 받아오기 위한 func
-        function checkAll(){
-            if($("#checkall").prop("checked")){
-                $("input[name=cartChkBox]").prop("checked",true);
-            }else{
-                $("input[name=cartChkBox]").prop("checked",false);
-            }
-            getOrderTotalPrice(); // 여기서 체크된 아이템들의 총 주문 금액 구하는 func 호출
-        }
+    table {
+      border-top: solid 1.5px black;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 14px;
+    }
 
-        // 장바구니 상품 개수 수정
-        function updateCartItemCount(cartItemId, count){
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
+    thead {
+      text-align: center;
+      font-weight: bold;
+    }
 
-            var url = "/cartItem/" + cartItemId+"?count=" + count;
+    tbody {
+      font-size: 12px;
+    }
 
-            $.ajax({
-                url      : url,
-                type     : "PATCH",
-                beforeSend : function(xhr){
-                    /* 데이터를 전송하기 전에 헤더에 csrf 값을 설정 */
-                    xhr.setRequestHeader(header, token);
-                },
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
-                    console.log("cartItem count update success");
-                },
-                error : function(jqXHR, status, error){
+    td {
+      padding: 15px 0px;
+      border-bottom: 1px solid lightgrey;
+    }
 
-                    if(jqXHR.status == '401'){
-                        alert('로그인 후 이용해주세요');
-                        location.href='/members/login';
-                    } else{
-                        alert(jqXHR.responseJSON.message);
-                    }
+    .cart__list__detail :nth-child(3) {
+      vertical-align: top;
+    }
 
-                }
-            });
-        }
+    .cart__list__detail :nth-child(3) a {
+      font-size: 12px;
+    }
 
-        // 카트에 있는 아이템 제거
-        function deleteCartItem(obj){
-            var cartItemId = obj.dataset.id;
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
+    .cart__list__detail :nth-child(3) p {
+      margin-top: 6px;
+      font-weight: bold;
+    }
 
-            var url = "/cartItem/" + cartItemId;
+    .cart__list__smartstore {
+      font-size: 12px;
+      color: gray;
+    }
 
-            $.ajax({
-                url      : url,
-                type     : "DELETE",
-                beforeSend : function(xhr){
-                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-                    xhr.setRequestHeader(header, token);
-                },
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
-                    location.href='/cart'; // 장바구니 페이지를 새로고침
-                },
-                error : function(jqXHR, status, error){
+    .cart__list__option {
+      vertical-align: top;
+      padding: 20px;
+    }
 
-                    if(jqXHR.status == '401'){
-                        alert('로그인 후 이용해주세요');
-                        location.href='/members/login';
-                    } else{
-                        alert(jqXHR.responseJSON.message);
-                    }
+    .cart__list__option p {
+      margin-bottom: 25px;
+      position: relative;
+    }
 
-                }
-            });
-        }
+    .cart__list__option p::after {
+      content: "";
+      width: 90%;
+      height: 1px;
+      background-color: lightgrey;
+      left: 0px;
+      top: 25px;
+      position: absolute;
+    }
 
-        function orders(){
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
+    .cart__list__optionbtn {
+      background-color: white;
+      font-size: 10px;
+      border: lightgrey solid 1px;
+      padding: 7px;
+    }
 
-            var url = "/cart/orders";
+    .cart__list__detail :nth-child(4),
+    .cart__list__detail :nth-child(5),
+    .cart__list__detail :nth-child(6) {
+      border-left: 2px solid whitesmoke;
+    }
 
-            var dataList = new Array();
-            var paramData = new Object();
+    .cart__list__detail :nth-child(5),
+    .cart__list__detail :nth-child(6) {
+      text-align: center;
+    }
 
-            $("input[name=cartChkBox]:checked").each(function() {
-                var cartItemId = $(this).val();
-                var data = new Object();
-                data["cartItemId"] = cartItemId;
-                dataList.push(data);
-            });
+    .cart__list__detail :nth-child(5) button {
+      background-color: #CBE8B2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 4px 8px;
+      font-size: 12px;
+      margin-top: 5px;
+    }
 
-            paramData['cartOrderDtoList'] = dataList;
+    .price {
+      font-weight: bold;
+    }
 
-            var param = JSON.stringify(paramData);
+    .cart__mainbtns {
+      width: 420px;
+      height: 200px;
+      padding-top: 40px;
+      display: block;
+      margin: auto;
+    }
 
-            $.ajax({
-                url      : url,
-                type     : "POST",
-                contentType : "application/json",
-                data     : param,
-                beforeSend : function(xhr){
-                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-                    xhr.setRequestHeader(header, token);
-                },
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
-                    alert("주문이 완료 되었습니다.");
-                    location.href='/orders';
-                },
-                error : function(jqXHR, status, error){
+    .cart__bigorderbtn {
+      width: 200px;
+      height: 50px;
+      font-size: 16px;
+      margin: auto;
+      border-radius: 5px;
+    }
 
-                    if(jqXHR.status == '401'){
-                        alert('로그인 후 이용해주세요');
-                        location.href='/members/login';
-                    } else{
-                        alert(jqXHR.responseJSON.message);
-                    }
+    .cart__bigorderbtn.left {
+      background-color: white;
+      border: 1px lightgray solid;
+    }
 
-                }
-            });
-        }
+    .cart__bigorderbtn.right {
+      background-color: #F6A5B7;
+      color: white;
+      border: none;
+    }
+</style>
 
-    </script>
-
-</th:block>
-
-<!-- 사용자 CSS 추가 -->
-<th:block layout:fragment="css">
-    <style>
-
-    </style>
-</th:block>
-
-<div layout:fragment="content" class="content-mg">
-    <div class="container container-mt">
-        <h2 class="mb-4">
-            장바구니 목록
-        </h2>
-
-        <div>
-
-            <table class="table">
-                <colgroup>
-                    <col width="15%"/>
-                    <col width="70%"/>
-                    <col width="15%"/>
-                </colgroup>
-                <thead>
-                <tr class="text-center">
-                    <td>
-                        <input type="checkbox" id="checkall" onclick="checkAll()"> 전체선택
-                    </td>
-                    <td>상품정보</td>
-                    <td>상품금액</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="cartItem : ${cartItems}">
-                    <td class="text-center align-middle">
-                        <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}">
-                    </td>
-                    <td class="d-flex">
-                        <div class="repImgDiv align-self-center">
-                            <img th:src="${cartItem.imgUrl}" class = "rounded repImg img-size" th:alt="${cartItem.itemNm}">
-                        </div>
-                        <div class="align-self-center">
-                            <span th:text="${cartItem.itemNm}" class="fs24 font-weight-bold"></span>
-                            <div class="fs18 font-weight-light">
-                            <span class="input-group mt-2">
-                                <span th:id="'price_' + ${cartItem.cartItemId}"
-                                      th:data-price="${cartItem.price}"
-                                      th:text="${cartItem.price} + '원'" class="align-self-center mr-2">
-                                </span>
-                                <input type="number" name="count" th:id="'count_' + ${cartItem.cartItemId}"
-                                       th:value="${cartItem.count}" min="1"
-                                       onchange="changeCount(this)" class="form-control mr-2" >
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true" th:data-id="${cartItem.cartItemId}" onclick="deleteCartItem(this)">&times;</span>
-                                </button>
-                            </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center align-middle">
-                    <span th:id="'totalPrice_' + ${cartItem.cartItemId}"
-                          name="totalPrice" th:text="${cartItem.price * cartItem.count} + '원'">
-                    </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <h2 class="text-center">
-                총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
-            </h2>
-
-            <div class="text-center mt-3">
-                <button type="button" class="btn btn-secondary btn-lg" onclick="orders()">주문하기</button>
-            </div>
-
-        </div>
+<body>
+<section class="cart">
+    <div class="cart__information">
+        <ul>
+            <li>장바구니 상품은 최대 30일간 저장됩니다.</li>
+            <li>가격, 옵션 등 정보가 변경된 경우 주문이 불가할 수 있습니다.</li>
+            <li>오늘출발 상품은 판매자 설정 시점에 따라 오늘출발 여부가 변경될 수 있으니 주문 시 꼭 다시 확인해 주시기 바랍니다.</li>
+        </ul>
     </div>
-
-
-</div>
-
+    <table class="cart__list">
+        <form>
+            <thead>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td colspan="2">상품정보</td>
+                <td>옵션</td>
+                <td>상품금액</td>
+                <td>배송비</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="cart__list__detail">
+                <td><input type="checkbox"></td>
+                <td><img src="image/keyboard.jpg" alt="magic keyboard"></td>
+                <td><a href="#">애플 공식 브랜드스토어</a><span class="cart__list__smartstore"> 스마트스토어</span>
+                    <p>Apple 매직 키보드 - 한국어(MK2A3KH/A)</p>
+                    <sapn class="price">116,62원</sapn><span
+                            style="text-decoration: line-through; color: lightgray;">119,000</span>
+                </td>
+                <td class="cart__list__option">
+                    <p>모델명 : 키보드 - 한국어 MK2A3KH/A / 1개</p>
+                    <button class="cart__list__optionbtn">주문조건 추가/변경</button>
+                </td>
+                <td><span class="price">116,620원</span><br>
+                    <button class="cart__list__orderbtn">주문하기</button>
+                </td>
+                <td>무료</td>
+            </tr>
+            <tr class="cart__list__detail">
+                <td style="width: 2%;"><input type="checkbox"></td>
+                <td style="width: 13%;">
+                    <img src="image/mouse.jpg" alt="magic mouse">
+                </td>
+                <td style="width: 27%;"><a href="#">컴퓨존</a><span class="cart__list__smartstore"> 스마트스토어</span>
+                    <p>[애플] Magic Mouse [MK2E3KH/A]</p>
+                    <span class=" price">88,900원</span>
+                </td>
+                <td class="cart__list__option" style="width: 27%;">
+                    <p>상품 주문 수량: 1개</p>
+                    <button class="cart__list__optionbtn">주문조건 추가/변경</button>
+                </td>
+                <td style="width: 15%;"><span class="price">88,900원</span><br>
+                    <button class="cart__list__orderbtn">주문하기</button>
+                </td>
+                <td style="width: 15%;">무료</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3"><input type="checkbox"> <button class="cart__list__optionbtn">선택상품 삭제</button>
+                    <button class="cart__list__optionbtn">선택상품 찜</button>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </form>
+    </table>
+    <div class="cart__mainbtns">
+        <button class="cart__bigorderbtn left">쇼핑 계속하기</button>
+        <button class="cart__bigorderbtn right">주문하기</button>
+    </div>
+</section>
+</body>
 </html>
