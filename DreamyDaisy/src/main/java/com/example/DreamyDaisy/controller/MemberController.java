@@ -26,7 +26,7 @@ public class MemberController {
 //    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
 //        boolean loginResult = memberService.login(memberDTO);
 //        if (loginResult){
-//            session.setAttribute("loginEmail", memberDTO.getMemberEmail());
+//            session.setAttribute("loginEmail", memberDTO.getEmail());
 //            return "main";
 //        } else {
 //            return "login";
@@ -46,5 +46,10 @@ public class MemberController {
         }else {
             return "join";//가입실패시
         }
+    }
+
+    @GetMapping("/cart")
+    public String cartFrom(){
+        return "cart";
     }
 }
