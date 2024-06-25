@@ -14,12 +14,12 @@ public class MemberService {
         return  memberRepository.save(memberDTO);
     }
 
-//    public boolean login(MemberDTO memberDTO) {
-//        MemberDTO loginMember = memberRepository.login(memberDTO);
-//        if(loginMember != null){
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    public boolean login(MemberDTO memberDTO) {
+        MemberDTO loginMember = memberRepository.login(memberDTO);
+        if(loginMember != null){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
